@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MT 레크레이션</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <section class="play-area">
+        <header class="header">
+          <div>
+            <p class="kicker">MT Recreation Board</p>
+            <h1>MT 레크레이션</h1>
+          </div>
+          <button id="fullscreenBtn" class="icon-btn" type="button" aria-label="전체화면">
+            ⛶
+          </button>
+        </header>
+
+        <nav id="gameTabs" class="game-tabs" aria-label="게임 선택"></nav>
+
+        <section id="personSettings" class="person-settings" aria-label="인물 맞추기 인원 설정">
+          <span>인물 라운드</span>
+          <button class="person-size active" type="button" data-size="50">50명</button>
+          <button class="person-size" type="button" data-size="100">100명</button>
+          <button class="person-size" type="button" data-size="150">150명</button>
+          <button class="person-size" type="button" data-size="200">200명</button>
+          <span>범위</span>
+          <button class="person-region active" type="button" data-region="korean">한국인만</button>
+          <button class="person-region" type="button" data-region="all">외국인 포함</button>
+          <span>난이도</span>
+          <button class="person-difficulty active" type="button" data-difficulty="easy">쉬움</button>
+          <button class="person-difficulty" type="button" data-difficulty="normal">보통</button>
+          <button class="person-difficulty" type="button" data-difficulty="hard">어려움</button>
+          <button class="person-difficulty" type="button" data-difficulty="all">전체</button>
+        </section>
+
+        <section class="card question-card" aria-live="polite">
+          <div class="question-top">
+            <span id="gameBadge" class="badge">게임 선택</span>
+            <span id="remainText" class="remain">문제 대기중</span>
+          </div>
+          <p id="ruleText" class="rule-text">게임을 고르고 랜덤 문제를 뽑아주세요.</p>
+          <div id="questionText" class="question-text">START</div>
+          <div id="answerText" class="answer-text hidden"></div>
+        </section>
+
+        <section class="actions">
+          <button id="drawBtn" class="primary" type="button">랜덤 문제 뽑기</button>
+          <button id="revealBtn" type="button">정답 보기</button>
+          <button id="passBtn" type="button">패스</button>
+          <button id="shuffleBtn" type="button">현재 게임 다시 섞기</button>
+        </section>
+      </section>
+
+      <aside class="panel">
+        <section class="card timer-card">
+          <div class="section-head">
+            <h2>타이머</h2>
+            <span id="timerState">대기</span>
+          </div>
+          <div id="timerDisplay" class="timer-display">60</div>
+          <div class="preset-grid">
+            <button class="preset" type="button" data-time="30">30초</button>
+            <button class="preset active" type="button" data-time="60">60초</button>
+            <button class="preset" type="button" data-time="90">90초</button>
+            <button class="preset" type="button" data-time="120">120초</button>
+          </div>
+          <div class="timer-controls">
+            <button id="startTimerBtn" type="button">시작</button>
+            <button id="pauseTimerBtn" type="button">정지</button>
+            <button id="resetTimerBtn" type="button">초기화</button>
+          </div>
+        </section>
+
+        <section class="card score-card">
+          <div class="section-head">
+            <h2>점수판</h2>
+            <button id="resetScoreBtn" class="small-btn" type="button">리셋</button>
+          </div>
+          <div id="scoreList" class="score-list"></div>
+          <button id="addTeamBtn" class="wide-btn" type="button">팀 추가</button>
+        </section>
+
+        <section class="card custom-card">
+          <div class="section-head">
+            <h2>즉석 문제</h2>
+            <span>현재 게임에 추가</span>
+          </div>
+          <label for="customQuestion">문제</label>
+          <input id="customQuestion" type="text" placeholder="예: 손흥민" />
+          <label for="customAnswer">정답/힌트</label>
+          <input id="customAnswer" type="text" placeholder="선택 입력" />
+          <button id="addQuestionBtn" class="wide-btn" type="button">추가</button>
+        </section>
+      </aside>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
