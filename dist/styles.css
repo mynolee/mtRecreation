@@ -150,7 +150,8 @@ h2 {
   color: #ffffff;
 }
 
-.person-settings {
+.person-settings,
+.game-settings {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -158,11 +159,13 @@ h2 {
   min-height: 48px;
 }
 
-.person-settings.hidden {
+.person-settings.hidden,
+.game-settings.hidden {
   display: none;
 }
 
-.person-settings span {
+.person-settings span,
+.game-settings span {
   color: var(--muted);
   font-size: 14px;
   font-weight: 900;
@@ -170,14 +173,22 @@ h2 {
 
 .person-size,
 .person-region,
-.person-difficulty {
+.person-difficulty,
+.proverb-size,
+.proverb-difficulty,
+.four-size,
+.initial-size {
   min-height: 38px;
   padding: 0 14px;
 }
 
 .person-size.active,
 .person-region.active,
-.person-difficulty.active {
+.person-difficulty.active,
+.proverb-size.active,
+.proverb-difficulty.active,
+.four-size.active,
+.initial-size.active {
   border-color: var(--green);
   background: var(--green);
   color: #ffffff;

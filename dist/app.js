@@ -11,6 +11,11 @@ const imageOverrides = {
   신동엽: commonsFile(
     '20190501 Shin Dong-yup 신동엽 Baeksang Arts Awards (1).jpg',
   ),
+  이순신: commonsFile('전 이순신 초상 (cropped).jpg'),
+  한효주: commonsFile('Han Hyo-joo in July 2024.jpg'),
+  권유리: commonsFile('Kwon Yu-ri at Incheon Airport on August 5, 2023.jpg'),
+  한지민: commonsFile('20230810 Han Jimin 한지민 07.jpg'),
+  선미: commonsFile('Lee Sunmi 이선미 2024 02.jpg'),
 };
 
 const textCroppedPeople = new Set([]);
@@ -823,6 +828,8 @@ const hardPeople = new Set([
   '미켈란젤로',
 ]);
 
+const proverb = (text, difficulty = 'normal') => ({ text, difficulty });
+
 const games = {
   person: {
     title: '인물 맞추기',
@@ -833,26 +840,96 @@ const games = {
     title: '몸으로 말해요',
     rule: '제시된 속담을 말 없이 몸짓으로 설명하고 팀원이 맞힙니다.',
     questions: [
-      ['가는 말이 고와야 오는 말이 곱다', '말을 예쁘게 하자'],
-      ['고래 싸움에 새우 등 터진다', '강자 싸움에 약자가 피해'],
-      ['낮말은 새가 듣고 밤말은 쥐가 듣는다', '말조심'],
-      ['돌다리도 두들겨 보고 건너라', '신중하게 행동'],
-      ['등잔 밑이 어둡다', '가까운 곳을 못 봄'],
-      ['말 한마디에 천 냥 빚도 갚는다', '말의 힘'],
-      ['믿는 도끼에 발등 찍힌다', '믿던 사람에게 배신'],
-      ['바늘 도둑이 소 도둑 된다', '작은 잘못이 커짐'],
-      ['백지장도 맞들면 낫다', '함께하면 쉽다'],
-      ['서당 개 삼 년이면 풍월을 읊는다', '오래 보면 배움'],
-      ['소 잃고 외양간 고친다', '일이 터진 뒤 수습'],
-      ['아니 땐 굴뚝에 연기 나랴', '원인 없는 소문 없음'],
-      ['우물 안 개구리', '좁은 세상만 앎'],
-      ['원숭이도 나무에서 떨어진다', '전문가도 실수'],
-      ['작은 고추가 맵다', '작아도 강함'],
-      ['티끌 모아 태산', '작은 것이 모이면 큼'],
-      ['하늘의 별 따기', '아주 어려움'],
-      ['호랑이도 제 말 하면 온다', '이야기하던 사람이 등장'],
-      ['금강산도 식후경', '먹고 나서 구경'],
-      ['꿩 대신 닭', '대신할 것을 씀'],
+      proverb('가는 말이 고와야 오는 말이 곱다', 'easy'),
+      proverb('고래 싸움에 새우 등 터진다', 'easy'),
+      proverb('낮말은 새가 듣고 밤말은 쥐가 듣는다', 'easy'),
+      proverb('돌다리도 두들겨 보고 건너라', 'easy'),
+      proverb('등잔 밑이 어둡다', 'easy'),
+      proverb('말 한마디에 천 냥 빚도 갚는다', 'easy'),
+      proverb('믿는 도끼에 발등 찍힌다', 'easy'),
+      proverb('바늘 도둑이 소 도둑 된다', 'easy'),
+      proverb('백지장도 맞들면 낫다', 'easy'),
+      proverb('소 잃고 외양간 고친다', 'easy'),
+      proverb('우물 안 개구리', 'easy'),
+      proverb('원숭이도 나무에서 떨어진다', 'easy'),
+      proverb('작은 고추가 맵다', 'easy'),
+      proverb('티끌 모아 태산', 'easy'),
+      proverb('하늘의 별 따기', 'easy'),
+      proverb('호랑이도 제 말 하면 온다', 'easy'),
+      proverb('금강산도 식후경', 'easy'),
+      proverb('꿩 대신 닭', 'easy'),
+      proverb('눈 가리고 아웅', 'easy'),
+      proverb('도랑 치고 가재 잡는다', 'easy'),
+      proverb('땅 짚고 헤엄치기', 'easy'),
+      proverb('발 없는 말이 천리 간다', 'easy'),
+      proverb('아는 길도 물어 가라', 'easy'),
+      proverb('엎질러진 물', 'easy'),
+      proverb('닭 잡아먹고 오리발 내민다', 'easy'),
+      proverb('하룻강아지 범 무서운 줄 모른다', 'easy'),
+      proverb('하늘이 무너져도 솟아날 구멍이 있다', 'easy'),
+      proverb('닭 쫓던 개 지붕 쳐다본다', 'easy'),
+      proverb('될성부른 나무는 떡잎부터 알아본다', 'easy'),
+      proverb('입에 쓴 약이 몸에 좋다', 'easy'),
+      proverb('서당 개 삼 년이면 풍월을 읊는다', 'normal'),
+      proverb('아니 땐 굴뚝에 연기 나랴', 'normal'),
+      proverb('개구리 올챙이 적 생각 못 한다', 'normal'),
+      proverb('공든 탑이 무너지랴', 'normal'),
+      proverb('그림의 떡', 'normal'),
+      proverb('김칫국부터 마신다', 'normal'),
+      proverb('꿩 먹고 알 먹기', 'normal'),
+      proverb('남의 떡이 더 커 보인다', 'normal'),
+      proverb('누워서 침 뱉기', 'normal'),
+      proverb('도토리 키 재기', 'normal'),
+      proverb('똥 묻은 개가 겨 묻은 개 나무란다', 'normal'),
+      proverb('마른하늘에 날벼락', 'normal'),
+      proverb('모로 가도 서울만 가면 된다', 'normal'),
+      proverb('배보다 배꼽이 더 크다', 'normal'),
+      proverb('벼는 익을수록 고개를 숙인다', 'normal'),
+      proverb('사공이 많으면 배가 산으로 간다', 'normal'),
+      proverb('세 살 버릇 여든까지 간다', 'normal'),
+      proverb('식은 죽 먹기', 'normal'),
+      proverb('열 번 찍어 안 넘어가는 나무 없다', 'normal'),
+      proverb('자라 보고 놀란 가슴 솥뚜껑 보고 놀란다', 'normal'),
+      proverb('고생 끝에 낙이 온다', 'normal'),
+      proverb('굴러온 돌이 박힌 돌 뺀다', 'normal'),
+      proverb('급히 먹는 밥이 체한다', 'normal'),
+      proverb('누울 자리 보고 발을 뻗어라', 'normal'),
+      proverb('도둑이 제 발 저리다', 'normal'),
+      proverb('목마른 사람이 우물 판다', 'normal'),
+      proverb('비 온 뒤에 땅이 굳어진다', 'normal'),
+      proverb('산 넘어 산이다', 'normal'),
+      proverb('열 손가락 깨물어 안 아픈 손가락 없다', 'normal'),
+      proverb('웃는 얼굴에 침 못 뱉는다', 'normal'),
+      proverb('종로에서 뺨 맞고 한강에서 눈 흘긴다', 'hard'),
+      proverb('가랑비에 옷 젖는 줄 모른다', 'hard'),
+      proverb('가지 많은 나무에 바람 잘 날 없다', 'hard'),
+      proverb('간에 붙었다 쓸개에 붙었다 한다', 'hard'),
+      proverb('구슬이 서 말이라도 꿰어야 보배', 'hard'),
+      proverb('급할수록 돌아가라', 'hard'),
+      proverb('길고 짧은 것은 대어 보아야 안다', 'hard'),
+      proverb('까마귀 날자 배 떨어진다', 'hard'),
+      proverb('달면 삼키고 쓰면 뱉는다', 'hard'),
+      proverb('되로 주고 말로 받는다', 'hard'),
+      proverb('뛰는 놈 위에 나는 놈 있다', 'hard'),
+      proverb('바늘 가는 데 실 간다', 'hard'),
+      proverb('빈 수레가 요란하다', 'hard'),
+      proverb('새 발의 피', 'hard'),
+      proverb('손바닥도 마주쳐야 소리가 난다', 'hard'),
+      proverb('숭어가 뛰니까 망둥이도 뛴다', 'hard'),
+      proverb('얌전한 고양이가 부뚜막에 먼저 올라간다', 'hard'),
+      proverb('열 길 물속은 알아도 한 길 사람 속은 모른다', 'hard'),
+      proverb('콩 심은 데 콩 나고 팥 심은 데 팥 난다', 'hard'),
+      proverb('가재는 게 편이다', 'hard'),
+      proverb('굼벵이도 구르는 재주가 있다', 'hard'),
+      proverb('꼬리가 길면 밟힌다', 'hard'),
+      proverb('꿔다 놓은 보릿자루', 'hard'),
+      proverb('달도 차면 기운다', 'hard'),
+      proverb('말 타면 경마 잡히고 싶다', 'hard'),
+      proverb('물에 빠지면 지푸라기라도 잡는다', 'hard'),
+      proverb('배 먹고 이 닦기', 'hard'),
+      proverb('소문난 잔치에 먹을 것 없다', 'hard'),
+      proverb('하룻밤을 자도 만리장성을 쌓는다', 'hard'),
+      proverb('핑계 없는 무덤 없다', 'hard'),
     ],
   },
   four: {
@@ -1047,9 +1124,12 @@ const state = {
   imageCache: {},
   humanCache: {},
   imageRequestId: 0,
-  imageRetryCount: 0,
   personRegion: 'korean',
   personDifficulty: 'easy',
+  proverbRoundSize: 10,
+  proverbDifficulty: 'easy',
+  fourRoundSize: 30,
+  initialRoundSize: 10,
   timerSeconds: 60,
   timerLeft: 60,
   timerId: null,
@@ -1072,6 +1152,9 @@ const $ = (selector) => document.querySelector(selector);
 const els = {
   gameTabs: $('#gameTabs'),
   personSettings: $('#personSettings'),
+  proverbSettings: $('#proverbSettings'),
+  fourSettings: $('#fourSettings'),
+  initialSettings: $('#initialSettings'),
   gameBadge: $('#gameBadge'),
   remainText: $('#remainText'),
   ruleText: $('#ruleText'),
@@ -1107,12 +1190,79 @@ function shuffle(items) {
 function buildDeck(gameKey) {
   const personPool = getPersonPool();
   const questions =
-    gameKey === 'person' ? shuffle(personPool) : games[gameKey].questions;
+    gameKey === 'person'
+      ? shuffle(personPool)
+      : gameKey === 'proverb'
+        ? getProverbRoundQuestions()
+        : gameKey === 'four'
+          ? getFourRoundQuestions()
+          : gameKey === 'initial'
+            ? getInitialRoundQuestions()
+            : games[gameKey].questions;
   state.decks[gameKey] = shuffle(questions);
   state.drawnCounts[gameKey] = 0;
 }
 
-function getPersonPool() {
+function getProverbPool() {
+  if (state.proverbDifficulty === 'random') return games.proverb.questions;
+  return games.proverb.questions.filter(
+    (item) => item.difficulty === state.proverbDifficulty,
+  );
+}
+
+function getProverbRoundTotal() {
+  const poolSize = getProverbPool().length;
+  return state.proverbRoundSize === 'all'
+    ? poolSize
+    : Math.min(state.proverbRoundSize, poolSize);
+}
+
+function getProverbRoundQuestions() {
+  if (state.proverbDifficulty !== 'random') {
+    return shuffle(getProverbPool()).slice(0, getProverbRoundTotal());
+  }
+
+  const difficulties = ['easy', 'normal', 'hard'];
+  const grouped = difficulties.map((difficulty) =>
+    shuffle(
+      games.proverb.questions.filter((item) => item.difficulty === difficulty),
+    ),
+  );
+  const total = getProverbRoundTotal();
+  const baseCount = Math.floor(total / difficulties.length);
+  const extraCount = total % difficulties.length;
+  const extraSlots = shuffle(difficulties.map((_, index) => index)).slice(
+    0,
+    extraCount,
+  );
+
+  return shuffle(
+    grouped.flatMap((items, index) =>
+      items.slice(0, baseCount + (extraSlots.includes(index) ? 1 : 0)),
+    ),
+  );
+}
+
+function getFourRoundTotal() {
+  const poolSize = games.four.questions.length;
+  return state.fourRoundSize === 'all'
+    ? poolSize
+    : Math.min(state.fourRoundSize, poolSize);
+}
+
+function getFourRoundQuestions() {
+  return shuffle(games.four.questions).slice(0, getFourRoundTotal());
+}
+
+function getInitialRoundTotal() {
+  return Math.min(state.initialRoundSize, games.initial.questions.length);
+}
+
+function getInitialRoundQuestions() {
+  return shuffle(games.initial.questions).slice(0, getInitialRoundTotal());
+}
+
+function getPersonBasePool() {
   const koreanPeople = uniquePeople(
     games.person.questions.filter((person) => person.region === 'korean'),
   ).slice(0, 300);
@@ -1120,11 +1270,38 @@ function getPersonPool() {
     games.person.questions.filter((person) => person.region === 'foreign'),
   ).slice(0, 200);
 
-  const regionPeople =
-    state.personRegion === 'korean'
-      ? koreanPeople
-      : [...koreanPeople, ...foreignPeople];
-  return filterPeopleByDifficulty(regionPeople);
+  return state.personRegion === 'korean'
+    ? koreanPeople
+    : [...koreanPeople, ...foreignPeople];
+}
+
+function getPersonPool() {
+  const regionPeople = getPersonBasePool();
+  const filteredPeople = filterPeopleByDifficulty(regionPeople);
+  if (
+    state.personDifficulty === 'all' ||
+    state.personDifficulty === 'normal'
+  ) {
+    return filteredPeople;
+  }
+
+  const targetSize = getPersonRoundTotal();
+  if (filteredPeople.length >= targetSize) return filteredPeople;
+
+  const filteredNames = new Set(filteredPeople.map((person) => person.name));
+  const supplements = regionPeople.filter(
+    (person) => !filteredNames.has(person.name),
+  );
+  return [...filteredPeople, ...supplements].slice(0, targetSize);
+}
+
+function getPersonRoundLimit() {
+  const regionPeople = getPersonBasePool();
+  if (state.personDifficulty === 'all') return regionPeople.length;
+  if (state.personDifficulty === 'normal') {
+    return filterPeopleByDifficulty(regionPeople).length;
+  }
+  return Math.min(100, regionPeople.length);
 }
 
 function getPersonDifficulty(person) {
@@ -1150,7 +1327,7 @@ function uniquePeople(people) {
 }
 
 function getPersonRoundTotal() {
-  return Math.min(state.personRoundSize, getPersonPool().length);
+  return Math.min(state.personRoundSize, getPersonRoundLimit());
 }
 
 function ensureDeck(gameKey) {
@@ -1183,7 +1360,7 @@ function renderPersonSettings() {
   els.personSettings.classList.toggle('hidden', state.currentGame !== 'person');
   document.querySelectorAll('.person-size').forEach((button) => {
     const size = Number(button.dataset.size);
-    button.disabled = size > getPersonPool().length;
+    button.disabled = size > getPersonRoundLimit();
     button.classList.toggle(
       'active',
       Number(button.dataset.size) === state.personRoundSize,
@@ -1201,6 +1378,52 @@ function renderPersonSettings() {
   });
 }
 
+function renderProverbSettings() {
+  els.proverbSettings.classList.toggle(
+    'hidden',
+    state.currentGame !== 'proverb',
+  );
+  document.querySelectorAll('.proverb-size').forEach((button) => {
+    const size =
+      button.dataset.size === 'all' ? 'all' : Number(button.dataset.size);
+    const active = size === state.proverbRoundSize;
+    const disabled = size !== 'all' && size > getProverbPool().length;
+    button.disabled = disabled;
+    button.classList.toggle('active', active);
+  });
+  document.querySelectorAll('.proverb-difficulty').forEach((button) => {
+    button.classList.toggle(
+      'active',
+      button.dataset.difficulty === state.proverbDifficulty,
+    );
+  });
+}
+
+function renderFourSettings() {
+  els.fourSettings.classList.toggle('hidden', state.currentGame !== 'four');
+  document.querySelectorAll('.four-size').forEach((button) => {
+    const size =
+      button.dataset.size === 'all' ? 'all' : Number(button.dataset.size);
+    const active = size === state.fourRoundSize;
+    const disabled =
+      size !== 'all' && size > games.four.questions.length;
+    button.disabled = disabled;
+    button.classList.toggle('active', active);
+  });
+}
+
+function renderInitialSettings() {
+  els.initialSettings.classList.toggle(
+    'hidden',
+    state.currentGame !== 'initial',
+  );
+  document.querySelectorAll('.initial-size').forEach((button) => {
+    const size = Number(button.dataset.size);
+    button.disabled = size > games.initial.questions.length;
+    button.classList.toggle('active', size === state.initialRoundSize);
+  });
+}
+
 function selectGame(gameKey) {
   state.currentGame = gameKey;
   state.currentQuestion = null;
@@ -1215,7 +1438,13 @@ function renderQuestion() {
   const total =
     state.currentGame === 'person'
       ? getPersonRoundTotal()
-      : game.questions.length;
+      : state.currentGame === 'proverb'
+        ? getProverbRoundTotal()
+        : state.currentGame === 'four'
+          ? getFourRoundTotal()
+          : state.currentGame === 'initial'
+            ? getInitialRoundTotal()
+            : game.questions.length;
   const drawn = state.drawnCounts[state.currentGame] || 0;
   els.gameBadge.textContent = game.title;
   els.ruleText.textContent = game.rule;
@@ -1236,6 +1465,12 @@ function renderQuestion() {
 
   if (state.currentGame === 'person') {
     renderPersonQuestion(state.currentQuestion);
+    return;
+  }
+
+  if (state.currentGame === 'proverb') {
+    els.questionText.textContent = state.currentQuestion.text;
+    els.answerText.textContent = '';
     return;
   }
 
@@ -1447,33 +1682,51 @@ function renderPersonQuestion(person) {
   getPersonImage(person)
     .then((src) => {
       if (requestId !== state.imageRequestId) return;
-      els.questionText.innerHTML = '';
-      const image = document.createElement('img');
-      image.className = 'person-photo';
-      image.classList.toggle(
-        'text-crop-top',
-        textCroppedPeople.has(person.name),
-      );
-      image.src = src;
-      image.alt = '인물 맞추기 사진';
-      image.loading = 'eager';
-      image.referrerPolicy = 'no-referrer';
-      image.addEventListener('load', () => {
-        tunePersonPhotoCrop(image);
-        countDisplayedQuestion();
-      });
-      image.onerror = () => {
-        if (requestId === state.imageRequestId) {
-          replaceFailedPersonImage();
-        }
-      };
-      els.questionText.append(image);
+      showPersonImage(person, src, requestId);
     })
     .catch(() => {
       if (requestId === state.imageRequestId) {
-        replaceFailedPersonImage();
+        showPersonFallback(person, requestId);
       }
     });
+}
+
+function showPersonImage(person, src, requestId) {
+  els.questionText.innerHTML = '';
+  const image = document.createElement('img');
+  image.className = 'person-photo';
+  image.classList.toggle(
+    'text-crop-top',
+    textCroppedPeople.has(person.name),
+  );
+  image.src = src;
+  image.alt = '인물 맞추기 사진';
+  image.loading = 'eager';
+  image.referrerPolicy = 'no-referrer';
+  image.addEventListener('load', () => {
+    tunePersonPhotoCrop(image);
+    countDisplayedQuestion();
+  });
+  image.onerror = () => {
+    if (requestId === state.imageRequestId) {
+      showPersonFallback(person, requestId);
+    }
+  };
+  els.questionText.append(image);
+}
+
+function showPersonFallback(person, requestId) {
+  if (requestId !== state.imageRequestId) return;
+  els.questionText.innerHTML = '';
+  const image = document.createElement('img');
+  image.className = 'person-photo';
+  image.src = makeFallbackPortrait(person.name);
+  image.alt = '인물 맞추기 사진';
+  image.addEventListener('load', () => {
+    tunePersonPhotoCrop(image);
+    countDisplayedQuestion();
+  });
+  els.questionText.append(image);
 }
 
 function tunePersonPhotoCrop(image) {
@@ -1481,28 +1734,6 @@ function tunePersonPhotoCrop(image) {
   image.classList.toggle('landscape', ratio > 1.2);
   image.classList.toggle('portrait', ratio < 0.82);
   image.classList.toggle('square', ratio >= 0.82 && ratio <= 1.2);
-}
-
-function replaceFailedPersonImage() {
-  if (state.currentGame !== 'person') return;
-  const deck = ensureDeck('person');
-  if (deck.length > 0 && state.imageRetryCount < 30) {
-    state.imageRetryCount += 1;
-    drawQuestion(false);
-    return;
-  }
-
-  const name = state.currentQuestion?.name || '인물';
-  els.questionText.innerHTML = '';
-  const image = document.createElement('img');
-  image.className = 'person-photo';
-  image.src = makeFallbackPortrait(name);
-  image.alt = '인물 맞추기 사진';
-  image.addEventListener('load', () => {
-    tunePersonPhotoCrop(image);
-    countDisplayedQuestion();
-  });
-  els.questionText.append(image);
 }
 
 function countDisplayedQuestion() {
@@ -1513,12 +1744,18 @@ function countDisplayedQuestion() {
   const total =
     state.currentGame === 'person'
       ? getPersonRoundTotal()
-      : games[state.currentGame].questions.length;
+      : state.currentGame === 'proverb'
+        ? getProverbRoundTotal()
+        : state.currentGame === 'four'
+          ? getFourRoundTotal()
+          : state.currentGame === 'initial'
+            ? getInitialRoundTotal()
+            : games[state.currentGame].questions.length;
   els.remainText.textContent = `전체 ${total}개 · 이번 라운드 ${state.drawnCounts[state.currentGame]}/${total}`;
 }
 
 function setPersonRoundSize(size) {
-  state.personRoundSize = Math.min(size, getPersonPool().length);
+  state.personRoundSize = Math.min(size, getPersonRoundLimit());
   resetPersonRound();
 }
 
@@ -1526,7 +1763,7 @@ function setPersonRegion(region) {
   state.personRegion = region;
   state.personRoundSize = Math.min(
     state.personRoundSize,
-    getPersonPool().length,
+    getPersonRoundLimit(),
   );
   resetPersonRound();
 }
@@ -1535,7 +1772,7 @@ function setPersonDifficulty(difficulty) {
   state.personDifficulty = difficulty;
   state.personRoundSize = Math.min(
     state.personRoundSize,
-    getPersonPool().length,
+    getPersonRoundLimit(),
   );
   resetPersonRound();
 }
@@ -1543,6 +1780,68 @@ function setPersonDifficulty(difficulty) {
 function resetPersonRound() {
   buildDeck('person');
   if (state.currentGame === 'person') {
+    state.currentQuestion = null;
+    state.isRoundEnded = false;
+    els.questionText.textContent = 'START';
+    els.answerText.classList.add('hidden');
+  }
+  render();
+}
+
+function setProverbRoundSize(size) {
+  state.proverbRoundSize = size === 'all' ? 'all' : Number(size);
+  resetProverbRound();
+}
+
+function setProverbDifficulty(difficulty) {
+  state.proverbDifficulty = difficulty;
+  if (
+    state.proverbRoundSize !== 'all' &&
+    state.proverbRoundSize > getProverbPool().length
+  ) {
+    state.proverbRoundSize = 'all';
+  }
+  resetProverbRound();
+}
+
+function resetProverbRound() {
+  buildDeck('proverb');
+  if (state.currentGame === 'proverb') {
+    state.currentQuestion = null;
+    state.isRoundEnded = false;
+    els.questionText.textContent = 'START';
+    els.answerText.classList.add('hidden');
+  }
+  render();
+}
+
+function setFourRoundSize(size) {
+  state.fourRoundSize = size === 'all' ? 'all' : Number(size);
+  resetFourRound();
+}
+
+function resetFourRound() {
+  buildDeck('four');
+  if (state.currentGame === 'four') {
+    state.currentQuestion = null;
+    state.isRoundEnded = false;
+    els.questionText.textContent = 'START';
+    els.answerText.classList.add('hidden');
+  }
+  render();
+}
+
+function setInitialRoundSize(size) {
+  state.initialRoundSize = Math.min(
+    Number(size),
+    games.initial.questions.length,
+  );
+  resetInitialRound();
+}
+
+function resetInitialRound() {
+  buildDeck('initial');
+  if (state.currentGame === 'initial') {
     state.currentQuestion = null;
     state.isRoundEnded = false;
     els.questionText.textContent = 'START';
@@ -1580,9 +1879,6 @@ function drawQuestion(resetImageRetries = true) {
       ? { ...nextQuestion, counted: false }
       : nextQuestion;
   state.isRoundEnded = false;
-  if (resetImageRetries) {
-    state.imageRetryCount = 0;
-  }
   if (state.currentGame !== 'person') {
     state.drawnCounts[state.currentGame] =
       (state.drawnCounts[state.currentGame] || 0) + 1;
@@ -1712,7 +2008,15 @@ function addCustomQuestion() {
           lang: 'ko',
           image: /^https?:\/\//i.test(answer) ? answer : '',
         }
-      : [question, answer];
+      : state.currentGame === 'proverb'
+        ? {
+            text: question,
+            difficulty:
+              state.proverbDifficulty === 'random'
+                ? 'normal'
+                : state.proverbDifficulty,
+          }
+        : [question, answer];
   games[state.currentGame].questions.push(customItem);
   state.decks[state.currentGame] = [
     customItem,
@@ -1760,6 +2064,26 @@ function bindEvents() {
       setPersonDifficulty(button.dataset.difficulty),
     );
   });
+  document.querySelectorAll('.proverb-size').forEach((button) => {
+    button.addEventListener('click', () =>
+      setProverbRoundSize(button.dataset.size),
+    );
+  });
+  document.querySelectorAll('.proverb-difficulty').forEach((button) => {
+    button.addEventListener('click', () =>
+      setProverbDifficulty(button.dataset.difficulty),
+    );
+  });
+  document.querySelectorAll('.four-size').forEach((button) => {
+    button.addEventListener('click', () =>
+      setFourRoundSize(button.dataset.size),
+    );
+  });
+  document.querySelectorAll('.initial-size').forEach((button) => {
+    button.addEventListener('click', () =>
+      setInitialRoundSize(button.dataset.size),
+    );
+  });
   document.querySelectorAll('.preset').forEach((button) => {
     button.addEventListener('click', () =>
       setTimer(Number(button.dataset.time)),
@@ -1784,6 +2108,9 @@ function bindEvents() {
 function render() {
   renderTabs();
   renderPersonSettings();
+  renderProverbSettings();
+  renderFourSettings();
+  renderInitialSettings();
   renderQuestion();
   renderTimer();
   renderScores();

@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node server.js"
+    "build": "mkdir -p dist && cp index.html dist/index.html && cp -R public/* dist/"
   }
 }
