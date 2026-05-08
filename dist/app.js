@@ -16,6 +16,9 @@ const imageOverrides = {
   권유리: commonsFile('Kwon Yu-ri at Incheon Airport on August 5, 2023.jpg'),
   한지민: commonsFile('20230810 Han Jimin 한지민 07.jpg'),
   선미: commonsFile('Lee Sunmi 이선미 2024 02.jpg'),
+  조국: commonsFile("Cho Kuk's Portrait (2024.12).jpg"),
+  이성민: commonsFile('200108 이성민.jpg'),
+  '써니(이순규)': commonsFile('Sunny SNSD 2022.jpg'),
 };
 
 const textCroppedPeople = new Set([]);
@@ -193,7 +196,6 @@ const famousPeople = [
   p('화사'),
   p('솔라'),
   p('문별'),
-  p('웬디'),
   p('슬기'),
   p('아이린', '아이린 (가수)'),
   p('조이(박수영)', '조이 (가수)'),
@@ -207,7 +209,6 @@ const famousPeople = [
   p('채영'),
   p('쯔위', '쯔위', 'ko', 'foreign'),
   p('미연'),
-  p('소연'),
   p('우기', '우기 (가수)', 'ko', 'foreign'),
   p('슈화', '슈화', 'ko', 'foreign'),
   p('윤아', '윤아'),
@@ -1502,12 +1503,31 @@ async function getPersonImage(person) {
     ['en', person.title],
     ['en', person.name],
   ];
+  const seenCandidates = new Set();
 
   for (const [lang, title] of candidates) {
+    const candidateKey = `${lang}:${title}`;
+    if (seenCandidates.has(candidateKey)) continue;
+    seenCandidates.add(candidateKey);
     const imageUrl = await getWikipediaSummaryImage(lang, title);
     if (imageUrl) {
       state.imageCache[cacheKey] = imageUrl;
       return imageUrl;
+    }
+  }
+
+  const searchTitles = [...new Set([person.title, person.name])];
+  for (const title of searchTitles) {
+    const commonsSearchImage = await getCommonsSearchImage(title);
+    if (commonsSearchImage) {
+      state.imageCache[cacheKey] = commonsSearchImage;
+      return commonsSearchImage;
+    }
+
+    const mediaSearchImage = await getCommonsMediaSearchImage(title);
+    if (mediaSearchImage) {
+      state.imageCache[cacheKey] = mediaSearchImage;
+      return mediaSearchImage;
     }
   }
 
@@ -1521,7 +1541,6 @@ async function getWikipediaSummaryImage(lang, title) {
     if (!response.ok) return '';
 
     const data = await response.json();
-    if (!(await isHumanSummary(data))) return '';
     const summaryImage =
       data.originalimage?.source || data.thumbnail?.source || '';
     if (isUsablePersonImage(summaryImage, title)) return summaryImage;
@@ -1529,11 +1548,29 @@ async function getWikipediaSummaryImage(lang, title) {
     const pageImage = await getPageImage(lang, data.title || title);
     if (isUsablePersonImage(pageImage, title)) return pageImage;
 
+    const pageFileImage = await getPageFileImage(lang, data.title || title);
+    if (isUsablePersonImage(pageFileImage, title)) return pageFileImage;
+
+    const wikidataImage = await getWikidataImage(data.wikibase_item, title);
+    if (isUsablePersonImage(wikidataImage, title)) return wikidataImage;
+
     const commonsImage = await getCommonsCategoryImage(
       data.wikibase_item,
       title,
     );
     if (isUsablePersonImage(commonsImage, title)) return commonsImage;
+
+    const commonsSearchImage = await getCommonsSearchImage(data.title || title);
+    if (isUsablePersonImage(commonsSearchImage, title)) {
+      return commonsSearchImage;
+    }
+
+    const mediaSearchImage = await getCommonsMediaSearchImage(
+      data.title || title,
+    );
+    if (isUsablePersonImage(mediaSearchImage, title)) {
+      return mediaSearchImage;
+    }
 
     return '';
   } catch {
@@ -1557,46 +1594,156 @@ async function getPageImage(lang, title) {
   }
 }
 
+async function getPageFileImage(lang, title) {
+  try {
+    const url = `https://${lang}.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=images&imlimit=50&format=json&origin=*`;
+    const response = await fetch(url);
+    if (!response.ok) return '';
+
+    const data = await response.json();
+    const pages = Object.values(data.query?.pages || {});
+    const imageTitles = pages
+      .flatMap((page) => page.images || [])
+      .map((image) => image.title)
+      .filter((imageTitle) => !hasBadImageTitle(imageTitle))
+      .slice(0, 12);
+
+    return getCommonsFileInfoImage(imageTitles, title);
+  } catch {
+    return '';
+  }
+}
+
 async function getCommonsCategoryImage(wikidataId, title) {
   try {
     const category = await getCommonsCategory(wikidataId);
     if (!category) return '';
 
-    const url = `https://commons.wikimedia.org/w/api.php?action=query&generator=categorymembers&gcmtitle=Category:${encodeURIComponent(category)}&gcmtype=file&gcmlimit=20&prop=imageinfo&iiprop=url|mime&iiurlwidth=1000&format=json&origin=*`;
+    const directImage = await getCommonsCategoryFile(category, title);
+    if (directImage) return directImage;
+
+    const url = `https://commons.wikimedia.org/w/api.php?action=query&list=categorymembers&cmtitle=Category:${encodeURIComponent(category)}&cmtype=subcat&cmlimit=8&format=json&origin=*`;
+    const response = await fetch(url);
+    if (!response.ok) return '';
+
+    const data = await response.json();
+    const subcategories = data.query?.categorymembers || [];
+    for (const subcategory of subcategories) {
+      const subcategoryName = subcategory.title?.replace(/^Category:/, '');
+      const imageUrl = await getCommonsCategoryFile(subcategoryName, title);
+      if (imageUrl) return imageUrl;
+    }
+
+    return '';
+  } catch {
+    return '';
+  }
+}
+
+async function getCommonsCategoryFile(category, title) {
+  if (!category) return '';
+
+  try {
+    const url = `https://commons.wikimedia.org/w/api.php?action=query&generator=categorymembers&gcmtitle=Category:${encodeURIComponent(category)}&gcmtype=file&gcmlimit=30&prop=imageinfo&iiprop=url|mime&iiurlwidth=1000&format=json&origin=*`;
     const response = await fetch(url);
     if (!response.ok) return '';
 
     const data = await response.json();
     const files = Object.values(data.query?.pages || {});
-    const imageFile = files.find((file) => {
-      const info = file.imageinfo?.[0];
-      return (
-        info?.thumburl &&
-        isUsablePersonImage(info.thumburl, title) &&
-        !hasBadImageTitle(file.title)
-      );
-    });
+    const imageFile = selectBestPersonImageFile(files, title);
     return imageFile?.imageinfo?.[0]?.thumburl || '';
   } catch {
     return '';
   }
 }
 
-async function getCommonsCategory(wikidataId) {
-  if (!wikidataId) return '';
+async function getCommonsSearchImage(title) {
+  if (!title) return '';
 
   try {
-    const url = `https://www.wikidata.org/wiki/Special:EntityData/${encodeURIComponent(wikidataId)}.json`;
+    const url = `https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrnamespace=6&gsrsearch=${encodeURIComponent(title)}&gsrlimit=8&prop=imageinfo&iiprop=url|mime&iiurlwidth=1000&format=json&origin=*`;
     const response = await fetch(url);
     if (!response.ok) return '';
 
     const data = await response.json();
-    const entity = data.entities?.[wikidataId];
-    const commonsCategory =
-      entity?.claims?.P373?.[0]?.mainsnak?.datavalue?.value;
-    return typeof commonsCategory === 'string' ? commonsCategory : '';
+    const files = Object.values(data.query?.pages || {});
+    const imageFile = selectBestPersonImageFile(files, title);
+    return imageFile?.imageinfo?.[0]?.thumburl || '';
   } catch {
     return '';
+  }
+}
+
+async function getCommonsMediaSearchImage(title) {
+  if (!title) return '';
+
+  try {
+    const url = `https://commons.wikimedia.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(title)}&language=ko&type=mediainfo&limit=10&format=json&origin=*`;
+    const response = await fetch(url);
+    if (!response.ok) return '';
+
+    const data = await response.json();
+    const fileTitles = (data.search || [])
+      .map((item) => item.title)
+      .filter((fileTitle) => fileTitle && !hasBadImageTitle(fileTitle))
+      .slice(0, 8);
+
+    return getCommonsFileInfoImage(fileTitles, title);
+  } catch {
+    return '';
+  }
+}
+
+async function getCommonsFileInfoImage(fileTitles, title) {
+  const titles = fileTitles
+    .map((fileTitle) =>
+      fileTitle.startsWith('File:') ? fileTitle : `File:${fileTitle}`,
+    )
+    .filter((fileTitle) => !hasBadImageTitle(fileTitle));
+
+  if (titles.length === 0) return '';
+
+  try {
+    const url = `https://commons.wikimedia.org/w/api.php?action=query&titles=${encodeURIComponent(titles.join('|'))}&prop=imageinfo&iiprop=url|mime&iiurlwidth=1000&format=json&origin=*`;
+    const response = await fetch(url);
+    if (!response.ok) return '';
+
+    const data = await response.json();
+    const files = Object.values(data.query?.pages || {});
+    const imageFile = selectBestPersonImageFile(files, title);
+    return imageFile?.imageinfo?.[0]?.thumburl || '';
+  } catch {
+    return '';
+  }
+}
+
+async function getWikidataImage(wikidataId, title) {
+  const entity = await getWikidataEntity(wikidataId);
+  const imageName = entity?.claims?.P18?.[0]?.mainsnak?.datavalue?.value;
+  if (typeof imageName !== 'string') return '';
+  const imageUrl = commonsFile(imageName);
+  return isUsablePersonImage(imageUrl, title) ? imageUrl : '';
+}
+
+async function getCommonsCategory(wikidataId) {
+  const entity = await getWikidataEntity(wikidataId);
+  const commonsCategory =
+    entity?.claims?.P373?.[0]?.mainsnak?.datavalue?.value;
+  return typeof commonsCategory === 'string' ? commonsCategory : '';
+}
+
+async function getWikidataEntity(wikidataId) {
+  if (!wikidataId) return null;
+
+  try {
+    const url = `https://www.wikidata.org/wiki/Special:EntityData/${encodeURIComponent(wikidataId)}.json`;
+    const response = await fetch(url);
+    if (!response.ok) return null;
+
+    const data = await response.json();
+    return data.entities?.[wikidataId] || null;
+  } catch {
+    return null;
   }
 }
 
@@ -1616,15 +1763,88 @@ function isUsablePersonImage(url, title) {
     'text',
     'wordmark',
     'banner',
+    'group',
+    'groups',
+    'members',
+    'member',
+    'cast',
+    'crew',
+    'team',
+    'family',
+    'couple',
+    'together',
+    'collage',
+    'montage',
+    'with ',
+    ' with',
+    ' and ',
+    ' & ',
+    'feat',
+    'featuring',
+    '단체',
+    '멤버',
+    '출연진',
+    '가족',
+    '커플',
+    '합동',
   ];
 
   if (blocked.some((word) => lower.includes(word))) return false;
   return true;
 }
 
+function isImageMime(mime) {
+  return typeof mime === 'string' && mime.startsWith('image/');
+}
+
+function selectBestPersonImageFile(files, title) {
+  return files
+    .filter((file) => {
+      const info = file.imageinfo?.[0];
+      return (
+        info?.thumburl &&
+        isImageMime(info.mime) &&
+        isUsablePersonImage(info.thumburl, title) &&
+        !hasBadImageTitle(file.title)
+      );
+    })
+    .sort((a, b) => {
+      return (
+        getPersonImageTitleScore(b.title, title) -
+        getPersonImageTitleScore(a.title, title)
+      );
+    })[0];
+}
+
+function getPersonImageTitleScore(fileTitle, title) {
+  const lowerTitle = normalizeImageText(fileTitle);
+  const lowerPerson = normalizeImageText(title);
+  let score = 0;
+
+  if (lowerTitle.includes(lowerPerson)) score += 8;
+  if (/\b(portrait|profile|headshot|solo|press|photo)\b/.test(lowerTitle)) {
+    score += 5;
+  }
+  if (/\b(red carpet|airport|interview|conference|event)\b/.test(lowerTitle)) {
+    score += 2;
+  }
+  if (hasMultiPersonHint(fileTitle)) score -= 20;
+  return score;
+}
+
+function normalizeImageText(text) {
+  return decodeURIComponent(String(text || ''))
+    .toLowerCase()
+    .replace(/^file:/, '')
+    .replace(/\([^)]*\)/g, '')
+    .replace(/[_-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 function hasBadImageTitle(title) {
   const lower = title.toLowerCase();
-  return [
+  const blocked = [
     'logo',
     'icon',
     'poster',
@@ -1634,6 +1854,40 @@ function hasBadImageTitle(title) {
     'text',
     'wordmark',
     'banner',
+    'album',
+    'single',
+    'soundtrack',
+  ];
+
+  return blocked.some((word) => lower.includes(word)) || hasMultiPersonHint(title);
+}
+
+function hasMultiPersonHint(title) {
+  const lower = normalizeImageText(title);
+  return [
+    'group',
+    'groups',
+    'members',
+    'cast',
+    'crew',
+    'team',
+    'family',
+    'couple',
+    'together',
+    'collage',
+    'montage',
+    'with ',
+    ' with',
+    ' and ',
+    ' & ',
+    'feat',
+    'featuring',
+    '단체',
+    '멤버',
+    '출연진',
+    '가족',
+    '커플',
+    '합동',
   ].some((word) => lower.includes(word));
 }
 
